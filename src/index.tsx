@@ -19,11 +19,11 @@ export default function BlurEffect({
     { blur: `${6 * intensityFactor}px`, maskStart: 75, maskEnd: 100, zIndex: 3 },
   ];
 
-  const positionClasses = {
-    bottom: 'bottom-0 left-0 right-0',
-    top: 'top-0 left-0 right-0',
-    left: 'left-0 top-0 bottom-0',
-    right: 'right-0 top-0 bottom-0'
+  const positionStyles = {
+    bottom: { bottom: 0, left: 0, right: 0, top: 'auto' },
+    top: { top: 0, left: 0, right: 0, bottom: 'auto' },
+    left: { left: 0, top: 0, bottom: 0, right: 'auto' },
+    right: { right: 0, top: 0, bottom: 0, left: 'auto' }
   };
 
   const gradientDirection = {
@@ -34,12 +34,25 @@ export default function BlurEffect({
   };
 
   return (
-    <div className={`absolute ${positionClasses[position]} z-10 ${className}`}>
+    <div
+      style={{
+        position: 'absolute',
+        zIndex: 10,
+        pointerEvents: 'auto',
+        ...positionStyles[position]
+      }}
+      className={className}
+    >
       {blurLayers.map((layer, index) => (
         <div
           key={index}
-          className="absolute inset-0 pointer-events-none"
           style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            pointerEvents: 'none',
             zIndex: layer.zIndex,
             backdropFilter: `blur(${layer.blur})`,
             WebkitBackdropFilter: `blur(${layer.blur})`,
